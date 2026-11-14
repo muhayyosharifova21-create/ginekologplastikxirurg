@@ -7,9 +7,9 @@ from aiogram.types import ReplyKeyboardMarkup, KeyboardButton, InlineKeyboardMar
 from aiogram.enums import ParseMode
 
 # ==========================================
-# SOZLAMALAR (TOKEN VA ADMINLAR)
+# SOZLAMALAR (YANGI BOT TOKEN VA ADMINLAR)
 # ==========================================
-BOT_TOKEN = "9117090922:AAHBdLtCq7bGsSbcnNoiFT_xCQZCh4xetcc"
+BOT_TOKEN = "9081300362:AAFR05lSfO2a2Khi3zB8qSSYIFwlngQCXAc"
 ADMIN_IDS = [6258110646, 7645769320]
 
 logging.basicConfig(level=logging.INFO)
@@ -65,8 +65,8 @@ async def cmd_start(message: types.Message):
     if user_id in ADMIN_IDS:
         await message.answer(
             "👩‍⚕️ <b>Assalomu alaykum, Doktor Surayyo Vahobjonovna!</b>\n\n"
-            "Klinika rasmiy saytidan (<b>ginekologplastikxirurg.uz</b>) va Telegram botdan kelgan "
-            "barcha bemor savollari shu yerga keladi.\n\n"
+            "<b>@ginekolog_plastik_xirurg_bot</b> rasmiy boti ishga tushdi. "
+            "Bemorlarning barcha savollari shu yerga keladi.\n\n"
             "🔒 <b>Xavfsizlik himoyasi yoqilgan:</b> Bemorlar rasm, video yoki fayl yubora olmaydi — faqat matn qabul qilinadi.",
             parse_mode=ParseMode.HTML,
             reply_markup=admin_keyboard
@@ -91,7 +91,6 @@ async def block_all_media(message: types.Message):
     if message.from_user.id in ADMIN_IDS:
         return
 
-    # Bemor yuborgan rasm/videoni darhol chatdan o'chirib tashlash
     try:
         await message.delete()
     except Exception:
@@ -196,9 +195,8 @@ async def btn_help(message: types.Message):
         return
     await message.answer(
         "💡 <b>Shifokor uchun qo'llanma:</b>\n\n"
-        "1️⃣ <b>Saytdan savol kelsa:</b> Xabarda <code>ID-XXXXXX</code> kodi bo'ladi. O'sha xabarga <b>Reply</b> qilsangiz, javob bemorning saytdagi chatiga boradi.\n"
-        "2️⃣ <b>Telegram botdan savol kelsa:</b> Xabarda <code>TG-ID: 123456789</code> bo'ladi. O'sha xabarga <b>Reply</b> qilsangiz, javob bemorning shaxsiy Telegramiga boradi.\n"
-        "3️⃣ <b>Media himoyasi:</b> Bemorlar yuborgan barcha rasm, video va fayllar avtomatik o'chiriladi.",
+        "1️⃣ <b>Telegram botdan savol kelsa:</b> Xabarda <code>TG-ID: 123456789</code> bo'ladi. O'sha xabarga <b>Reply</b> qilsangiz, javob bemorning shaxsiy Telegramiga boradi.\n"
+        "2️⃣ <b>Media himoyasi:</b> Bemorlar yuborgan barcha rasm, video va fayllar avtomatik o'chiriladi.",
         parse_mode=ParseMode.HTML
     )
 
@@ -234,18 +232,6 @@ async def handle_doctor_reply(message: types.Message):
         except Exception as e:
             await message.reply(f"❌ Xatolik: Bemorga yuborib bo'lmadi ({e}).")
         return
-
-    if "ID-" in replied_text:
-        patient_id = "Noma'lum"
-        for word in replied_text.split():
-            if word.startswith("ID-"):
-                patient_id = word.strip(".,:;()[]")
-                break
-
-        await message.reply(
-            f"✅ Javobingiz <b>{patient_id}</b> kodli sayt bemoriga yuborildi!",
-            parse_mode=ParseMode.HTML
-        )
 
 # ==========================================
 # FAQAT MATNLI SAVOLLARNI ADMINLARGA YUBORISH
