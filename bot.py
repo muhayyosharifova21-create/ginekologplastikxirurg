@@ -31,7 +31,8 @@ admin_keyboard = ReplyKeyboardMarkup(
             KeyboardButton(text="👤 Bemor menyusini ko'rish")
         ]
     ],
-    resize_keyboard=True
+    resize_keyboard=True,
+    persistent=True
 )
 
 patient_keyboard = ReplyKeyboardMarkup(
@@ -45,7 +46,9 @@ patient_keyboard = ReplyKeyboardMarkup(
             KeyboardButton(text="🌐 Rasmiy sayt va kanallar")
         ]
     ],
-    resize_keyboard=True
+    resize_keyboard=True,
+    persistent=True,
+    input_field_placeholder="Savolingizni yozing yoki menyudan tanlang..."
 )
 
 links_inline = InlineKeyboardMarkup(
@@ -135,7 +138,8 @@ async def patient_appointment(message: types.Message):
         "📍 <b>Manzil:</b> Toshkent shahri\n"
         "📞 <b>Telefon / SMS:</b> <code>+998952775354</code>\n\n"
         "✍️ <i>Ism-familiyangiz, telefon raqamingiz va qaysi muolajaga kelmoqchi ekaningizni shu yerga matn qilib yozib qoldiring — o'zimiz bog'lanamiz!</i>",
-        parse_mode=ParseMode.HTML
+        parse_mode=ParseMode.HTML,
+        reply_markup=patient_keyboard
     )
 
 @dp.message(F.text == "💬 Shifokorga savol berish")
@@ -145,7 +149,8 @@ async def patient_ask_info(message: types.Message):
         "Savolingizni shu yerga oddiy xabar qilib yozing. Xabaringiz maxfiy tarzda to'g'ridan-to'g'ri "
         "<b>Doktor Surayyo Vahobjonovna</b>ga yuboriladi va tez orada shu chatning o'zida javob olasiz.\n\n"
         "🚫 <i>Eslatma: Rasm va video yuborish taqiqlangan — faqat matn yozing.</i>",
-        parse_mode=ParseMode.HTML
+        parse_mode=ParseMode.HTML,
+        reply_markup=patient_keyboard
     )
 
 @dp.message(F.text == "🌐 Rasmiy sayt va kanallar")
@@ -176,7 +181,8 @@ async def btn_broadcast(message: types.Message):
     await message.answer(
         "📢 <b>Ommaviy Broadcast:</b>\n"
         "Har bir bemorga alohida javob berish uchun uning savoliga <b>Reply</b> qiling.",
-        parse_mode=ParseMode.HTML
+        parse_mode=ParseMode.HTML,
+        reply_markup=admin_keyboard
     )
 
 @dp.message(F.text == "🧹 Chatni tozalash")
@@ -186,7 +192,8 @@ async def btn_clear_chat(message: types.Message):
     await message.answer(
         "🧹 Telegram chatini tozalash uchun keraksiz xabarlarni belgilab, "
         "yuqoridagi <b>O'chirish (Delete)</b> tugmasini bosing.",
-        parse_mode=ParseMode.HTML
+        parse_mode=ParseMode.HTML,
+        reply_markup=admin_keyboard
     )
 
 @dp.message(F.text == "💡 Yordam & Qo'llanma")
@@ -197,7 +204,8 @@ async def btn_help(message: types.Message):
         "💡 <b>Shifokor uchun qo'llanma:</b>\n\n"
         "1️⃣ <b>Telegram botdan savol kelsa:</b> Xabarda <code>TG-ID: 123456789</code> bo'ladi. O'sha xabarga <b>Reply</b> qilsangiz, javob bemorning shaxsiy Telegramiga boradi.\n"
         "2️⃣ <b>Media himoyasi:</b> Bemorlar yuborgan barcha rasm, video va fayllar avtomatik o'chiriladi.",
-        parse_mode=ParseMode.HTML
+        parse_mode=ParseMode.HTML,
+        reply_markup=admin_keyboard
     )
 
 # ==========================================
@@ -226,7 +234,8 @@ async def handle_doctor_reply(message: types.Message):
                     f"{doctor_reply_text}\n\n"
                     f"📞 <i>Qo'shimcha savollar uchun: +998 95 277 53 54</i>"
                 ),
-                parse_mode=ParseMode.HTML
+                parse_mode=ParseMode.HTML,
+                reply_markup=patient_keyboard
             )
             await message.reply("✅ Javobingiz bemorning Telegramiga yetkazildi!")
         except Exception as e:
